@@ -34,13 +34,6 @@ class ApiClient(val baseUrl: String) {
         }.body()
     }
 
-    /**
-     * Realiza una petición PUT.
-     *
-     * @param endpoint El endpoint de la API (relativo a baseUrl)
-     * @param body El cuerpo de la petición
-     * @return La respuesta deserializada al tipo T
-     */
     suspend inline fun <reified T> put(
         endpoint: String,
         body: Any
@@ -51,25 +44,12 @@ class ApiClient(val baseUrl: String) {
         }.body()
     }
 
-    /**
-     * Realiza una petición DELETE.
-     *
-     * @param endpoint El endpoint de la API (relativo a baseUrl)
-     * @return La respuesta deserializada al tipo T
-     */
     suspend inline fun <reified T> delete(
         endpoint: String
     ): T {
         return client.delete(baseUrl + endpoint).body()
     }
 
-    /**
-     * Realiza una petición GET que retorna una lista.
-     *
-     * @param endpoint El endpoint de la API (relativo a baseUrl)
-     * @param parameters Parámetros de query opcionales
-     * @return Lista de elementos del tipo T
-     */
     suspend inline fun <reified T> getList(
         endpoint: String,
         parameters: Map<String, Any>? = null

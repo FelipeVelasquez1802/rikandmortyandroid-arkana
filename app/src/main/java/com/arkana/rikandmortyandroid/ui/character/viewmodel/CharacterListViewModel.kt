@@ -30,7 +30,8 @@ internal class CharacterListViewModel : ViewModel() {
                     characters =
                         listOf(
                             CharacterResponseDto(
-                                image = "",
+                                id = 1,
+                                image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
                                 name = "Rick Sanchez",
                                 status = "Alive",
                             ),

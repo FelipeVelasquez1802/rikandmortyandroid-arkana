@@ -1,9 +1,9 @@
 package com.arkana.rikandmortyandroid.data.character.dto
 
-internal enum class StatusEnum {
-    ALIVE,
-    DEAD,
-    UNKNOW,
+internal enum class StatusEnum(val value: String) {
+    ALIVE(value = "Alive"),
+    DEAD(value = "Dead"),
+    UNKNOW(value = "Unknow"),
     ;
 
     companion object {

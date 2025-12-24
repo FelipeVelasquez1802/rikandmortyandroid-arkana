@@ -63,6 +63,10 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.compose)
 
+    // Coil
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.ktor)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

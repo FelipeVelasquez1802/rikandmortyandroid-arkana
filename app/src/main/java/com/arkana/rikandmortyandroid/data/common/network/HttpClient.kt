@@ -1,4 +1,6 @@
-package com.arkana.rikandmortyandroid_arkana.data.network
+@file:Suppress("ktlint:standard:filename")
+
+package com.arkana.rikandmortyandroid.data.common.network
 
 import android.util.Log
 import io.ktor.client.HttpClient
@@ -15,7 +17,6 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 object KtorClient {
-
     private const val TAG = "KtorClient"
     private const val REQUEST_TIMEOUT = 30_000L
 
@@ -27,19 +28,22 @@ object KtorClient {
             }
 
             install(ContentNegotiation) {
-                json(Json {
-                    prettyPrint = true
-                    isLenient = true
-                    ignoreUnknownKeys = true
-                })
+                json(
+                    Json {
+                        prettyPrint = true
+                        isLenient = true
+                        ignoreUnknownKeys = true
+                    },
+                )
             }
 
             install(Logging) {
-                logger = object : Logger {
-                    override fun log(message: String) {
-                        Log.d(TAG, message)
+                logger =
+                    object : Logger {
+                        override fun log(message: String) {
+                            Log.d(TAG, message)
+                        }
                     }
-                }
                 level = LogLevel.ALL
             }
 

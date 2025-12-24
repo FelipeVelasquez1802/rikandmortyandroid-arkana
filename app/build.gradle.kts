@@ -5,13 +5,13 @@ plugins {
 }
 
 android {
-    namespace = "com.arkana.rikandmortyandroid_arkana"
+    namespace = "com.arkana.rikandmortyandroid"
     compileSdk {
         version = release(36)
     }
 
     defaultConfig {
-        applicationId = "com.arkana.rikandmortyandroid_arkana"
+        applicationId = "com.arkana.rikandmortyandroid"
         minSdk = 29
         targetSdk = 36
         versionCode = 1
@@ -25,7 +25,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }

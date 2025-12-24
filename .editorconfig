@@ -1,0 +1,23 @@
+root = true
+
+[*.{kt,kts}]
+# Indentation
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Maximum line length
+max_line_length = 120
+
+# Kotlin specific
+ij_kotlin_allow_trailing_comma = true
+ij_kotlin_allow_trailing_comma_on_call_site = true
+
+# Import ordering
+ij_kotlin_imports_layout = *,java.**,javax.**,kotlin.**,^
+
+# Blank lines
+ij_kotlin_blank_lines_around_block_when_branches = 0
+
+ktlint_function_naming_ignore_when_annotated_with = Composable

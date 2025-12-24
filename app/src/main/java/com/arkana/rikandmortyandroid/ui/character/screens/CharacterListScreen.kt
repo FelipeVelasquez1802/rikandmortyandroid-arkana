@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import com.arkana.rikandmortyandroid.data.character.dto.CharacterResponseDto
 import com.arkana.rikandmortyandroid.ui.character.screens.components.CharacterItemScreen
+import com.arkana.rikandmortyandroid.ui.character.state.CharacterListWrapper
 import com.arkana.rikandmortyandroid.ui.character.viewmodel.CharacterListViewModel
 import com.arkana.rikandmortyandroid.ui.common.screens.components.AppContainer
 import org.koin.androidx.compose.koinViewModel
@@ -14,13 +15,17 @@ import org.koin.androidx.compose.koinViewModel
 internal fun CharacterListScreen() {
     val viewModel = koinViewModel<CharacterListViewModel>()
     val state by viewModel.state.collectAsState()
-    CharacterListContent(characters = state.characters)
+    CharacterListContent(state = state)
 }
 
 @Composable
-private fun CharacterListContent(characters: List<CharacterResponseDto>) {
-    AppContainer {
-        characters.forEach { character ->
+private fun CharacterListContent(
+    state: CharacterListWrapper.State,
+) {
+    AppContainer(
+        loading = state.loading,
+    ) {
+        state.characters.forEach { character ->
             CharacterItemScreen(character)
         }
     }
@@ -30,8 +35,8 @@ private fun CharacterListContent(characters: List<CharacterResponseDto>) {
 @Composable
 private fun CharacterListScreenPreview() {
     CharacterListContent(
-        characters =
-            listOf(
+        state = CharacterListWrapper.State(
+            characters = listOf(
                 CharacterResponseDto(
                     id = 1,
                     image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
@@ -39,5 +44,6 @@ private fun CharacterListScreenPreview() {
                     status = "Alive",
                 ),
             ),
+        ),
     )
 }

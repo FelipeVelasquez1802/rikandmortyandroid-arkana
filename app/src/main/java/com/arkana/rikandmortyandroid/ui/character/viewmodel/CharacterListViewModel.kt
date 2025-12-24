@@ -36,6 +36,8 @@ internal class CharacterListViewModel(
             repository
                 .getCharacters(page)
                 .onSuccess { characters ->
+                    println("********************************")
+                    println(characters)
                     _state.update { state ->
                         state.copy(
                             characters = characters,

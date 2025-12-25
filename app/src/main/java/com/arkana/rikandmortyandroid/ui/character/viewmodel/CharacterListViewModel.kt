@@ -35,12 +35,12 @@ internal class CharacterListViewModel(
 
             repository
                 .getCharacters(page)
-                .onSuccess { characters ->
-                    println("********************************")
-                    println(characters)
+                .onSuccess { result ->
                     _state.update { state ->
                         state.copy(
-                            characters = characters,
+                            characters = result.characters,
+                            currentPage = result.currentPage,
+                            totalPages = result.totalPages,
                             loading = false,
                         )
                     }
@@ -49,6 +49,35 @@ internal class CharacterListViewModel(
                         state.copy(
                             error = error.message ?: "Unknown error",
                             loading = false,
+                        )
+                    }
+                }
+        }
+    }
+
+    fun loadNextPage() {
+        val currentState = _state.value
+        if (currentState.loadingMore || !currentState.hasMorePages) return
+
+        viewModelScope.launch {
+            _state.update { it.copy(loadingMore = true, error = null) }
+
+            repository
+                .getCharacters(currentState.currentPage + 1)
+                .onSuccess { result ->
+                    _state.update { state ->
+                        state.copy(
+                            characters = state.characters + result.characters,
+                            currentPage = result.currentPage,
+                            totalPages = result.totalPages,
+                            loadingMore = false,
+                        )
+                    }
+                }.onFailure { error ->
+                    _state.update { state ->
+                        state.copy(
+                            error = error.message ?: "Unknown error",
+                            loadingMore = false,
                         )
                     }
                 }

@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -34,8 +32,7 @@ fun AppContainer(
                 Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
-                    .navigationBarsPadding()
-                    .verticalScroll(rememberScrollState()),
+                    .navigationBarsPadding(),
         ) {
             content()
         }

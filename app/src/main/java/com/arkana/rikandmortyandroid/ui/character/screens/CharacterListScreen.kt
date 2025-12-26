@@ -23,6 +23,8 @@ import com.arkana.rikandmortyandroid.ui.character.screens.components.CharacterIt
 import com.arkana.rikandmortyandroid.ui.character.state.CharacterListWrapper
 import com.arkana.rikandmortyandroid.ui.character.viewmodel.CharacterListViewModel
 import com.arkana.rikandmortyandroid.ui.common.screens.components.AppContainer
+import com.arkana.rikandmortyandroid.ui.common.screens.components.EmptyView
+import com.arkana.rikandmortyandroid.ui.common.screens.components.ErrorView
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -32,6 +34,7 @@ internal fun CharacterListScreen() {
     CharacterListContent(
         state = state,
         onLoadMore = { viewModel.loadNextPage() },
+        onRetry = { viewModel.retry() },
     )
 }
 
@@ -39,6 +42,7 @@ internal fun CharacterListScreen() {
 private fun CharacterListContent(
     state: CharacterListWrapper.State,
     onLoadMore: () -> Unit,
+    onRetry: () -> Unit,
 ) {
     val listState = rememberLazyListState()
 
@@ -61,22 +65,37 @@ private fun CharacterListContent(
     }
 
     AppContainer(
-        loading = state.loading,
+        loading = state.loading && state.characters.isEmpty(),
     ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            state = listState,
-        ) {
-            items(
-                items = state.characters,
-                key = { character -> character.id },
-            ) { character ->
-                CharacterItemScreen(character)
+        when {
+            state.error != null && state.characters.isEmpty() -> {
+                ErrorView(
+                    message = state.error,
+                    onRetry = onRetry,
+                )
             }
 
-            if (state.loadingMore) {
-                item {
-                    LoadingItem()
+            state.characters.isEmpty() && !state.loading -> {
+                EmptyView()
+            }
+
+            else -> {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    state = listState,
+                ) {
+                    items(
+                        items = state.characters,
+                        key = { character -> character.id },
+                    ) { character ->
+                        CharacterItemScreen(character)
+                    }
+
+                    if (state.loadingMore) {
+                        item {
+                            LoadingItem()
+                        }
+                    }
                 }
             }
         }
@@ -96,7 +115,7 @@ private fun LoadingItem() {
     }
 }
 
-@Preview
+@Preview(name = "Success State")
 @Composable
 private fun CharacterListScreenPreview() {
     CharacterListContent(
@@ -113,5 +132,29 @@ private fun CharacterListScreenPreview() {
                     ),
             ),
         onLoadMore = {},
+        onRetry = {},
+    )
+}
+
+@Preview(name = "Error State")
+@Composable
+private fun CharacterListErrorPreview() {
+    CharacterListContent(
+        state =
+            CharacterListWrapper.State(
+                error = "Failed to load characters. Check your connection.",
+            ),
+        onLoadMore = {},
+        onRetry = {},
+    )
+}
+
+@Preview(name = "Empty State")
+@Composable
+private fun CharacterListEmptyPreview() {
+    CharacterListContent(
+        state = CharacterListWrapper.State(),
+        onLoadMore = {},
+        onRetry = {},
     )
 }

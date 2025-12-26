@@ -3,6 +3,7 @@ package com.arkana.rikandmortyandroid.ui.character.screens.components
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +15,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,7 +27,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
+import coil3.compose.SubcomposeAsyncImage
 import com.arkana.rikandmortyandroid.data.character.dto.CharacterResponseDto
 
 @Composable
@@ -45,7 +47,7 @@ internal fun CharacterItemScreen(character: CharacterResponseDto) {
                     .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            AsyncImage(
+            SubcomposeAsyncImage(
                 model = character.image,
                 contentDescription = character.name,
                 modifier =
@@ -53,6 +55,32 @@ internal fun CharacterItemScreen(character: CharacterResponseDto) {
                         .size(80.dp)
                         .clip(RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop,
+                loading = {
+                    Box(
+                        modifier = Modifier.size(80.dp),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(24.dp),
+                            strokeWidth = 2.dp,
+                        )
+                    }
+                },
+                error = {
+                    Box(
+                        modifier =
+                            Modifier
+                                .size(80.dp)
+                                .background(Color.LightGray),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Text(
+                            text = "?",
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = Color.Gray,
+                        )
+                    }
+                },
             )
 
             Spacer(modifier = Modifier.width(16.dp))
